@@ -1,4 +1,28 @@
-# Jadwal Sholat — Mobile (Android & iOS)
+<div align="center">
+
+# 🕌 Jadwal Sholat — Mobile (Android & iOS)
+
+**Jadwal sholat akurat, adzan tepat waktu, langsung dari saku Anda.**
+
+<a href="https://github.com/djadjoel/jadwal-sholat"><img alt="Jadwal Sholat versi Web" src="https://img.shields.io/badge/🌐_Coba_Versi_Web-Jadwal_Sholat-0b1026?style=for-the-badge&labelColor=1e3a8a"></a>
+<a href="https://www.hostinger.com/id?REFERRALCODE=HMMDJADJOUVL"><img alt="Hosting di Hostinger" src="https://img.shields.io/badge/🚀_Hosting_%26_VPS-Hostinger-673DE6?style=for-the-badge&logo=hostinger&logoColor=white"></a>
+
+<a href="https://bantenweb.com"><img alt="BantenWeb" src="https://img.shields.io/badge/💼_BantenWeb-Jasa_Website-0ea5e9?style=for-the-badge"></a>
+<a href="https://baniakoy.com"><img alt="Baniakoy" src="https://img.shields.io/badge/🌿_Baniakoy-Kunjungi-16a34a?style=for-the-badge"></a>
+
+<sub>🌐 Repo versi web (PHP + PWA) · 🚀 Hostinger: hosting & VPS untuk menjalankan versi web (<i>tautan referral</i>) · 💼 BantenWeb · 🌿 Baniakoy</sub>
+
+<br>
+
+![Capacitor](https://img.shields.io/badge/Capacitor-8-119EFF?logo=capacitor&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)
+![Android](https://img.shields.io/badge/Android-✓-3DDC84?logo=android&logoColor=white)
+![iOS](https://img.shields.io/badge/iOS-✓-000000?logo=apple&logoColor=white)
+![License](https://img.shields.io/badge/license-MIT-blue)
+
+</div>
+
+---
 
 Versi aplikasi mobile dari [Jadwal Sholat (web)](https://github.com/djadjoel/jadwal-sholat), dibangun dengan **Capacitor 8** + **Vite**. Satu basis kode menghasilkan aplikasi native Android dan iOS. Datanya tetap dari **Bimas Islam Kementerian Agama RI** melalui API publik MyQuran (`api.myquran.com/v2`).
 
@@ -78,13 +102,6 @@ npm run assets
 - **Batas notifikasi**: iOS hanya mengizinkan 64 notifikasi terjadwal, jadi aplikasi menjadwalkan ±8 hari ke depan. Android menjadwalkan ±20 hari. Setiap kali aplikasi dibuka, jadwal diperbarui otomatis.
 - **Nada khusus iOS**: iOS memakai nada notifikasi bawaan. Untuk nada khusus, jalankan `node scripts/make-chime.mjs ios/App/App/chime.wav`, tambahkan berkasnya ke target *App* di Xcode, lalu ubah `sound` di `src/lib/native.js` agar `chime.wav` juga dipakai di iOS.
 - Beberapa HP Android (Xiaomi, Oppo, Vivo, dll.) mematikan alarm aplikasi demi hemat baterai. Bila notifikasi terlambat, set baterai aplikasi ke **Tanpa batasan**.
-
-## Tautan
-
-- [Jadwal Sholat versi web](https://github.com/djadjoel/jadwal-sholat): repo sumber aplikasi web (PHP + PWA)
-- [Hostinger](https://www.hostinger.com/id?REFERRALCODE=HMMDJADJOUVL): hosting & VPS untuk menjalankan versi web (tautan referral)
-- [BantenWeb](https://bantenweb.com)
-- [Baniakoy](https://baniakoy.com)
 
 ## Lisensi
 MIT. Data jadwal © Bimas Islam Kementerian Agama RI; data lokasi © kontributor OpenStreetMap.

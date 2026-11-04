@@ -14,6 +14,7 @@
     "ios": "vite build && cap sync ios && cap open ios",
     "run:android": "vite build && cap sync android && cap run android",
     "run:ios": "vite build && cap sync ios && cap run ios",
+    "live:android": "cap run android -l --host localhost --port 5173 --forwardPorts 5173:5173",
     "assets": "node scripts/make-assets.mjs && capacitor-assets generate --ios --android --iconBackgroundColor \"#0b1026\" --iconBackgroundColorDark \"#0b1026\" --splashBackgroundColor \"#0b1026\" --splashBackgroundColorDark \"#0b1026\" && node scripts/make-splash.mjs",
     "test": "node --test \"tests/**/*.test.js\""
   },

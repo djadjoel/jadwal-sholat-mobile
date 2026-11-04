@@ -1,6 +1,6 @@
 # Jadwal Sholat — Mobile (Android & iOS)
 
-Versi aplikasi mobile dari [`../jadwal-sholat`](../jadwal-sholat), dibangun dengan **Capacitor 8** + **Vite**. Satu basis kode menghasilkan aplikasi native Android dan iOS. Datanya tetap dari **Bimas Islam Kementerian Agama RI** melalui API publik MyQuran (`api.myquran.com/v2`).
+Versi aplikasi mobile dari [Jadwal Sholat (web)](https://github.com/djadjoel/jadwal-sholat), dibangun dengan **Capacitor 8** + **Vite**. Satu basis kode menghasilkan aplikasi native Android dan iOS. Datanya tetap dari **Bimas Islam Kementerian Agama RI** melalui API publik MyQuran (`api.myquran.com/v2`).
 
 ## Fitur
 - Jadwal harian & bulanan untuk 500+ kab/kota, jam real-time, hitung mundur, dan langit dinamis seperti versi web.
@@ -52,6 +52,14 @@ npm run run:android  # atau langsung ke emulator/HP yang terhubung
 ```
 Setiap kali kode di `src/` atau `index.html` berubah, jalankan `npm run sync`.
 
+### Live reload di emulator/HP Android
+
+```bash
+npm run dev            # terminal 1: server Vite
+npm run live:android   # terminal 2: pasang ke emulator/HP, perubahan kode langsung terlihat
+```
+Debug WebView: buka `chrome://inspect` di Chrome desktop. Ekstensi VS Code yang disarankan ada di `.vscode/extensions.json`.
+
 ### APK / AAB rilis (Android)
 1. Android Studio → **Build › Generate Signed App Bundle / APK**, lalu buat keystore (simpan baik-baik, jangan di-commit).
 2. Pilih **Android App Bundle (.aab)** untuk Google Play, atau **APK** untuk dipasang langsung.
@@ -70,6 +78,13 @@ npm run assets
 - **Batas notifikasi**: iOS hanya mengizinkan 64 notifikasi terjadwal, jadi aplikasi menjadwalkan ±8 hari ke depan. Android menjadwalkan ±20 hari. Setiap kali aplikasi dibuka, jadwal diperbarui otomatis.
 - **Nada khusus iOS**: iOS memakai nada notifikasi bawaan. Untuk nada khusus, jalankan `node scripts/make-chime.mjs ios/App/App/chime.wav`, tambahkan berkasnya ke target *App* di Xcode, lalu ubah `sound` di `src/lib/native.js` agar `chime.wav` juga dipakai di iOS.
 - Beberapa HP Android (Xiaomi, Oppo, Vivo, dll.) mematikan alarm aplikasi demi hemat baterai. Bila notifikasi terlambat, set baterai aplikasi ke **Tanpa batasan**.
+
+## Tautan
+
+- [Jadwal Sholat versi web](https://github.com/djadjoel/jadwal-sholat): repo sumber aplikasi web (PHP + PWA)
+- [Hostinger](https://www.hostinger.com/id?REFERRALCODE=HMMDJADJOUVL): hosting & VPS untuk menjalankan versi web (tautan referral)
+- [BantenWeb](https://bantenweb.com)
+- [Baniakoy](https://baniakoy.com)
 
 ## Lisensi
 MIT. Data jadwal © Bimas Islam Kementerian Agama RI; data lokasi © kontributor OpenStreetMap.

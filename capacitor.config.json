@@ -1,0 +1,37 @@
+{
+  "appId": "id.jadwalsholat.app",
+  "appName": "Jadwal Sholat",
+  "webDir": "dist",
+  "backgroundColor": "#0b1026",
+  "android": {
+    "backgroundColor": "#0b1026",
+    "allowMixedContent": false
+  },
+  "ios": {
+    "backgroundColor": "#0b1026",
+    "contentInset": "never",
+    "scrollEnabled": true
+  },
+  "plugins": {
+    "CapacitorHttp": { "enabled": true },
+    "SplashScreen": {
+      "launchAutoHide": false,
+      "launchShowDuration": 3000,
+      "backgroundColor": "#0b1026",
+      "showSpinner": false,
+      "androidScaleType": "CENTER_CROP"
+    },
+    "LocalNotifications": {
+      "smallIcon": "ic_stat_crescent",
+      "iconColor": "#F6C56F",
+      "presentationOptions": ["badge", "sound", "alert"]
+    },
+    "StatusBar": {
+      "style": "DARK"
+    },
+    "SystemBars": {
+      "insetsHandling": "css",
+      "style": "DARK"
+    }
+  }
+}

@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' capacitor: https://localhost http://localhost; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://api.myquran.com https://nominatim.openstreetmap.org ws://localhost:* http://localhost:*; media-src 'self' data:; object-src 'none'; base-uri 'none'">
+<meta name="theme-color" content="#0b1026">
+<meta name="color-scheme" content="dark">
+<meta name="format-detection" content="telephone=no">
+<title>Jadwal Sholat</title>
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<script type="module" src="/src/main.js"></script>
+</head>
+<body data-phase="night" data-tab="today">
+
+<div class="sky" aria-hidden="true">
+  <div class="sky-layer" data-sky="night"></div>
+  <div class="sky-layer" data-sky="dawn"></div>
+  <div class="sky-layer" data-sky="day"></div>
+  <div class="sky-layer" data-sky="afternoon"></div>
+  <div class="sky-layer" data-sky="dusk"></div>
+  <div class="stars"></div>
+  <div class="stars stars--far"></div>
+  <div class="pattern"></div>
+  <div class="orb" id="orb"></div>
+  <div class="horizon"></div>
+</div>
+
+<svg class="sprite" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f6c56f"/><stop offset="1" stop-color="#5eead4"/>
+    </linearGradient>
+  </defs>
+  <symbol id="i-crescent" viewBox="0 0 24 24"><path d="M20.5 14.5A8.5 8.5 0 1 1 9.5 3.5a7 7 0 0 0 11 11z"/></symbol>
+  <symbol id="i-imsak" viewBox="0 0 24 24"><path d="M18 14.5A7 7 0 1 1 9.5 6a5.5 5.5 0 0 0 8.5 8.5z"/><path d="M18 3v4M16 5h4"/></symbol>
+  <symbol id="i-subuh" viewBox="0 0 24 24"><path d="M3 19h18M7 19a5 5 0 0 1 10 0M12 3v6M9 6l3-3 3 3M4.5 13.5l1.4 1M19.5 13.5l-1.4 1"/></symbol>
+  <symbol id="i-terbit" viewBox="0 0 24 24"><path d="M3 19h18M6 19a6 6 0 0 1 12 0M12 6V4M5.6 10.6 4.2 9.2M18.4 10.6l1.4-1.4M2 15h2M20 15h2"/></symbol>
+  <symbol id="i-dhuha" viewBox="0 0 24 24"><circle cx="12" cy="13" r="4"/><path d="M12 4v2M12 20v1M5 13H3M21 13h-2M6.3 7.3 7.7 8.7M17.7 7.3l-1.4 1.4"/></symbol>
+  <symbol id="i-dzuhur" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></symbol>
+  <symbol id="i-ashar" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M9 2.5V3.5M3.5 8h1M5.1 4.1l.7.7M12.9 4.1l-.7.7"/><path d="M17.5 20H9a4 4 0 1 1 1.1-7.85A5 5 0 0 1 19.6 14a3 3 0 0 1-2.1 6z"/></symbol>
+  <symbol id="i-maghrib" viewBox="0 0 24 24"><path d="M3 19h18M7 19a5 5 0 0 1 10 0M12 9V3M9 6l3 3 3-3M4.5 13.5l1.4 1M19.5 13.5l-1.4 1"/></symbol>
+  <symbol id="i-isya" viewBox="0 0 24 24"><path d="M19 14.5A7.5 7.5 0 1 1 9.5 5a6 6 0 0 0 9.5 9.5z"/><path d="M19 4l.6 1.4L21 6l-1.4.6L19 8l-.6-1.4L17 6l1.4-.6z"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></symbol>
+  <symbol id="i-locate" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="7.5"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 9a6 6 0 0 1 12 0c0 6 2.5 8 2.5 8h-17S6 15 6 9z"/><path d="M10 20.5a2.2 2.2 0 0 0 4 0"/></symbol>
+  <symbol id="i-bell-off" viewBox="0 0 24 24"><path d="M8.6 3.9A6 6 0 0 1 18 9c0 3 .6 5 1.3 6.3M17 17H3.5S6 15 6 9c0-.6.1-1.2.3-1.8"/><path d="M10 20.5a2.2 2.2 0 0 0 4 0M3 3l18 18"/></symbol>
+  <symbol id="i-chev-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-chev-left" viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></symbol>
+  <symbol id="i-chev-right" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11A8 8 0 0 0 5.6 6.4L3 9M3 4v5h5M4 13a8 8 0 0 0 14.4 4.6L21 15M21 20v-5h-5"/></symbol>
+  <symbol id="i-alarm" viewBox="0 0 24 24"><circle cx="12" cy="13" r="7.5"/><path d="M12 9v4l2.5 2M5 3 2 6M19 3l3 3"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.5v.5"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12.5a1.5 1.5 0 0 0 1.5 1.5h7a1.5 1.5 0 0 0 1.5-1.5L18 7M9 7V4.5A1.5 1.5 0 0 1 10.5 3h3A1.5 1.5 0 0 1 15 4.5V7"/></symbol>
+</svg>
+
+<header class="topbar">
+  <button class="city-pill" id="btnCity" type="button" aria-haspopup="dialog" aria-controls="cityDialog">
+    <svg class="ico"><use href="#i-pin"/></svg>
+    <span class="city-pill__text">
+      <span class="city-pill__name" id="cityName">Memuat…</span>
+      <small class="city-pill__region" id="regionLabel">&nbsp;</small>
+    </span>
+    <svg class="ico ico--sm"><use href="#i-chev-down"/></svg>
+  </button>
+  <button class="icon-btn" id="btnLocate" type="button" aria-label="Deteksi lokasi saya">
+    <svg class="ico"><use href="#i-locate"/></svg>
+  </button>
+</header>
+
+<main class="views" id="views">
+  <!-- ============ HARI INI ============ -->
+  <section class="view" id="view-today" data-view="today" aria-label="Hari ini">
+    <article class="glass hero-card reveal">
+      <div class="hero-top">
+        <div class="clock" role="timer" aria-live="off">
+          <span id="clockHM">--:--</span><span class="clock__sec" id="clockS">--</span>
+        </div>
+        <span class="tz-chip" id="tzLabel">WIB</span>
+      </div>
+      <p class="date" id="dateGreg">&nbsp;</p>
+      <p class="hijri" id="dateHijri">&nbsp;</p>
+
+      <div class="next">
+        <div class="ring">
+          <svg viewBox="0 0 140 140" aria-hidden="true">
+            <circle class="ring__track" cx="70" cy="70" r="60"/>
+            <circle class="ring__bar" id="ringBar" cx="70" cy="70" r="60"/>
+          </svg>
+          <div class="ring__inner">
+            <svg class="ico ico--lg" id="nextIcon"><use href="#i-dzuhur"/></svg>
+            <span class="ring__pct" id="ringPct">0%</span>
+          </div>
+        </div>
+        <div class="next-info">
+          <p class="eyebrow">Menuju waktu</p>
+          <h2 class="next-name"><span id="nextName">—</span> <span class="arabic" id="nextArabic" lang="ar"></span></h2>
+          <div class="countdown" id="countdown" aria-live="off">--:--:--</div>
+          <p class="muted small" id="nextAt">&nbsp;</p>
+        </div>
+      </div>
+    </article>
+
+    <div class="section-head">
+      <h2>Jadwal Hari Ini</h2>
+      <span class="badge" id="sourceBadge">Kemenag RI</span>
+    </div>
+    <ol class="time-list glass is-loading" id="timeList"></ol>
+    <p class="hint muted small" id="listHint">Ketuk ikon lonceng untuk mengatur notifikasi tiap waktu.</p>
+  </section>
+
+  <!-- ============ BULANAN ============ -->
+  <section class="view" id="view-month" data-view="month" aria-label="Jadwal bulanan" hidden>
+    <div class="month-head">
+      <button class="icon-btn icon-btn--sm" id="monthPrev" type="button" aria-label="Bulan sebelumnya"><svg class="ico"><use href="#i-chev-left"/></svg></button>
+      <div class="month-title">
+        <h2 id="monthLabel" aria-live="polite">—</h2>
+        <p class="muted small" id="monthCity">&nbsp;</p>
+      </div>
+      <button class="icon-btn icon-btn--sm" id="monthNext" type="button" aria-label="Bulan berikutnya"><svg class="ico"><use href="#i-chev-right"/></svg></button>
+    </div>
+    <div class="glass table-card">
+      <div class="table-wrap" id="tableWrap" tabindex="0" aria-label="Tabel jadwal bulanan">
+        <table class="month-table">
+          <thead>
+            <tr><th scope="col">Tgl</th><th scope="col" class="aux">Imsak</th><th scope="col">Subuh</th><th scope="col" class="aux">Terbit</th><th scope="col" class="aux">Dhuha</th><th scope="col">Dzuhur</th><th scope="col">Ashar</th><th scope="col">Maghrib</th><th scope="col">Isya</th></tr>
+          </thead>
+          <tbody id="monthBody"></tbody>
+        </table>
+      </div>
+    </div>
+    <p class="hint muted small">Geser tabel ke samping untuk melihat semua kolom. Baris emas = hari ini.</p>
+  </section>
+
+  <!-- ============ PENGATURAN ============ -->
+  <section class="view" id="view-settings" data-view="settings" aria-label="Pengaturan" hidden>
+    <h2 class="view-title">Pengaturan</h2>
+
+    <h3 class="group-title">Notifikasi</h3>
+    <div class="glass settings">
+      <label class="row">
+        <span class="row__icon"><svg class="ico"><use href="#i-bell"/></svg></span>
+        <span class="row__text"><strong>Notifikasi waktu sholat</strong><small id="notifStatus">Tetap berbunyi walau aplikasi ditutup</small></span>
+        <input type="checkbox" class="switch" id="setNotify">
+      </label>
+      <div class="row row--stack" id="rowPrayers">
+        <span class="row__text"><strong>Waktu yang diberitahukan</strong></span>
+        <div class="chips" id="prayerChips"></div>
+      </div>
+      <div class="row row--stack">
+        <span class="row__text"><strong>Pengingat sebelum waktu sholat</strong><small>Notifikasi tambahan beberapa menit sebelumnya</small></span>
+        <div class="segmented" id="beforeSeg" role="radiogroup" aria-label="Menit sebelum waktu sholat"></div>
+      </div>
+      <button class="row row--btn" id="rowExact" type="button" hidden>
+        <span class="row__icon row__icon--warn"><svg class="ico"><use href="#i-alarm"/></svg></span>
+        <span class="row__text"><strong>Izinkan alarm tepat waktu</strong><small>Agar notifikasi tidak terlambat (Android 12+)</small></span>
+        <svg class="ico ico--sm"><use href="#i-chev-right"/></svg>
+      </button>
+      <button class="row row--btn" id="rowTest" type="button">
+        <span class="row__icon"><svg class="ico"><use href="#i-info"/></svg></span>
+        <span class="row__text"><strong>Uji notifikasi</strong><small>Kirim contoh notifikasi dalam 5 detik</small></span>
+        <svg class="ico ico--sm"><use href="#i-chev-right"/></svg>
+      </button>
+    </div>
+
+    <h3 class="group-title">Lokasi</h3>
+    <div class="glass settings">
+      <button class="row row--btn" id="rowCity" type="button">
+        <span class="row__icon"><svg class="ico"><use href="#i-pin"/></svg></span>
+        <span class="row__text"><strong>Kabupaten / kota</strong><small id="setCityName">—</small></span>
+        <svg class="ico ico--sm"><use href="#i-chev-right"/></svg>
+      </button>
+      <label class="row">
+        <span class="row__icon"><svg class="ico"><use href="#i-locate"/></svg></span>
+        <span class="row__text"><strong>Perbarui lokasi otomatis</strong><small>Deteksi kab/kota tiap aplikasi dibuka (cocok saat bepergian)</small></span>
+        <input type="checkbox" class="switch" id="setAutoLocate">
+      </label>
+    </div>
+
+    <h3 class="group-title">Data</h3>
+    <div class="glass settings">
+      <button class="row row--btn" id="rowRefresh" type="button">
+        <span class="row__icon"><svg class="ico"><use href="#i-refresh"/></svg></span>
+        <span class="row__text"><strong>Perbarui jadwal sekarang</strong><small id="lastSync">—</small></span>
+        <svg class="ico ico--sm"><use href="#i-chev-right"/></svg>
+      </button>
+      <button class="row row--btn" id="rowClear" type="button">
+        <span class="row__icon row__icon--danger"><svg class="ico"><use href="#i-trash"/></svg></span>
+        <span class="row__text"><strong>Hapus data offline</strong><small>Jadwal tersimpan akan diunduh ulang</small></span>
+        <svg class="ico ico--sm"><use href="#i-chev-right"/></svg>
+      </button>
+    </div>
+
+    <div class="about">
+      <span class="brand-mark"><svg><use href="#i-crescent"/></svg></span>
+      <p><strong>Jadwal Sholat</strong> · versi <span id="appVersion">—</span></p>
+      <p class="muted small">Sumber data: <strong>Bimas Islam Kementerian Agama RI</strong> melalui API publik MyQuran. Data lokasi © kontributor OpenStreetMap. Tanggal Hijriah dihitung otomatis (Umm al-Qura) dan dapat berbeda ±1 hari dengan penetapan resmi.</p>
+    </div>
+  </section>
+</main>
+
+<nav class="tabbar" aria-label="Navigasi utama">
+  <button type="button" class="tab" data-tab="today" aria-current="page"><svg class="ico"><use href="#i-sun"/></svg><span>Hari Ini</span></button>
+  <button type="button" class="tab" data-tab="month"><svg class="ico"><use href="#i-calendar"/></svg><span>Bulanan</span></button>
+  <button type="button" class="tab" data-tab="settings"><svg class="ico"><use href="#i-gear"/></svg><span>Pengaturan</span></button>
+</nav>
+
+<dialog class="sheet" id="cityDialog" aria-labelledby="cityDialogTitle">
+  <div class="sheet__grab" aria-hidden="true"></div>
+  <div class="sheet__head">
+    <h2 id="cityDialogTitle">Pilih Kabupaten / Kota</h2>
+    <button class="icon-btn icon-btn--sm" type="button" id="cityClose" aria-label="Tutup"><svg class="ico"><use href="#i-x"/></svg></button>
+  </div>
+  <div class="search">
+    <svg class="ico"><use href="#i-search"/></svg>
+    <input id="cityInput" type="search" placeholder="Cari, mis. Bandung, Makassar…" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="40" enterkeyhint="search">
+  </div>
+  <button class="locate-row" type="button" id="cityLocate"><svg class="ico"><use href="#i-locate"/></svg>Gunakan lokasi saya saat ini</button>
+  <p class="muted small sheet__hint" id="cityHint">Memuat daftar 500+ kabupaten/kota…</p>
+  <ul class="city-list" id="cityList" role="listbox" aria-label="Hasil pencarian kota"></ul>
+</dialog>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+</body>
+</html>

@@ -88,6 +88,16 @@ Debug WebView: buka `chrome://inspect` di Chrome desktop. Ekstensi VS Code yang 
 1. Android Studio → **Build › Generate Signed App Bundle / APK**, lalu buat keystore (simpan baik-baik, jangan di-commit).
 2. Pilih **Android App Bundle (.aab)** untuk Google Play, atau **APK** untuk dipasang langsung.
 
+**Cara cepat (APK untuk dibagikan via WhatsApp, tanpa Play Store):**
+
+```bash
+npm run apk
+```
+
+Hasilnya: `android/app/build/outputs/apk/release/app-release.apk`. Signing dibaca dari `android/keystore.properties` + `android/jadwal-sholat-release.jks` (keduanya tidak di-commit — **backup**, karena update APK wajib memakai keystore yang sama). Butuh JDK 21 (`JAVA_HOME`); JDK 25 bawaan Android Studio belum didukung Gradle 8.14.
+
+Untuk update: naikkan `versionCode` (dan `versionName`) di `android/app/build.gradle`, build ulang, lalu bagikan APK baru — penerima cukup memasangnya di atas versi lama.
+
 ### Rilis iOS
 Xcode → pilih *Any iOS Device* → **Product › Archive** → **Distribute App** (perlu Apple Developer Program).
 

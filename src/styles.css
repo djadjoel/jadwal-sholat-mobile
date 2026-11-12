@@ -307,6 +307,8 @@ body[data-phase="dusk"] .stars, body[data-phase="dawn"] .stars { opacity: .35; }
 
 .about { text-align: center; margin: 30px 10px 6px; display: grid; justify-items: center; gap: 8px; }
 .about strong { color: var(--text); }
+.about__credit a { color: var(--muted); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.about__credit a:active { color: #f6c56f; }
 .brand-mark {
   width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center;
   background: linear-gradient(135deg, var(--gold), #e08f4f); color: #1a1204; box-shadow: 0 8px 24px -8px rgba(246, 197, 111, .7);

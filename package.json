@@ -4,6 +4,7 @@
   "private": true,
   "description": "Aplikasi mobile (Android & iOS) Jadwal Sholat — data Bimas Islam Kemenag RI",
   "license": "MIT",
+  "author": { "name": "bantenweb.com", "url": "https://bantenweb.com" },
   "type": "module",
   "scripts": {
     "dev": "vite",
